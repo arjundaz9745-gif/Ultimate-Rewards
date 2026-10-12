@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#7c3aed" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Ultimate Rewards</title>
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" href="/logo.png" />
+  <link rel="stylesheet" href="/css/app.css" />
+</head>
+<body>
+  <div id="toast" class="toast"></div>
+  <div id="login" class="login-screen">
+    <img class="logo" src="/logo.png" alt="Ultimate Rewards" />
+    <h1>ULTIMATE REWARDS</h1>
+    <p>Earn points, invite friends, redeem rewards. Login with Discord only.</p>
+    <a class="btn btn-discord" href="/auth/discord">Login with Discord</a>
+    <p style="margin-top:18px;font-size:11px;color:#6b6280">Invite: discord.gg/TC2SZf2C5</p>
+  </div>
+  <div id="app" class="app hide">
+    <div class="topbar">
+      <div class="user-chip">
+        <img id="avatar" src="" alt="" class="hide" />
+        <div id="avatarPh" class="avatar-ph"></div>
+        <div class="user-meta">
+          <div class="name" id="uname">User</div>
+          <div class="sub" id="urole">Member</div>
+        </div>
+      </div>
+      <div class="bal-chip"><span>Rs</span> <span id="wallet">0.00</span></div>
+      <button class="icon-btn" onclick="go('redeem')">🎁</button>
+    </div>
+    <section id="page-home" class="page active">
+      <div class="points-wrap">
+        <div class="points-label">Available Points</div>
+        <div class="points-row">
+          <div class="p-card gold"><div class="val" id="pts">0</div><div class="lbl">Points</div></div>
+          <div class="p-card gem"><div class="val" id="gems">0</div><div class="lbl">Diamonds</div></div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="tiles-2">
+          <div class="tile chat" onclick="go('chat')"><h3>Chat & Earn</h3><p>Get coin upto ∞</p></div>
+          <div class="tile offer" onclick="go('offer')"><h3>OfferPro</h3><p>Invite Discord · up to 100K</p></div>
+        </div>
+        <div class="tiles-3">
+          <div class="mini" onclick="dailyClaim()"><div class="emoji">🔥</div><div class="t">Daily Streak</div><div class="s">Up to 100k</div></div>
+          <div class="mini" onclick="go('ranking')"><div class="emoji">🏆</div><div class="t">Ranking</div><div class="s">Leaderboard</div></div>
+          <div class="mini" onclick="go('redeem')"><div class="emoji">🎁</div><div class="t">Redeem</div><div class="s">Rewards</div></div>
+        </div>
+      </div>
+    </section>
+    <section id="page-chat" class="page">
+      <div class="section">
+        <h2>Chat & Earn</h2>
+        <p style="color:var(--muted);font-size:13px;margin-bottom:12px">Message the AI and earn points for real chats.</p>
+        <div class="chat-box" id="chatBox"></div>
+        <div class="chat-input">
+          <input id="chatIn" placeholder="Say something..." maxlength="400" />
+          <button class="btn btn-primary" style="padding:12px 16px" onclick="sendChat()">Send</button>
+        </div>
+      </div>
+    </section>
+    <section id="page-offer" class="page">
+      <div class="section">
+        <h2>OfferPro</h2>
+        <p style="color:var(--muted);font-size:13px;margin-bottom:14px">Invite friends to Discord to earn points.</p>
+        <div class="row">
+          <div class="grow"><strong>Discord invite</strong><div style="font-size:12px;color:var(--muted)">discord.gg/TC2SZf2C5</div></div>
+          <button class="btn btn-primary" style="padding:10px 14px;font-size:13px" onclick="copyInvite()">Copy</button>
+        </div>
+        <div style="height:12px"></div>
+        <div class="row">
+          <div class="grow"><strong>Your invites</strong><div style="font-size:12px;color:var(--muted)" id="inviteCount">0 invites</div></div>
+          <span class="pts" id="invitePts">+0</span>
+        </div>
+        <a class="btn btn-discord" style="margin-top:16px;width:100%;max-width:none" href="https://discord.gg/TC2SZf2C5" target="_blank" rel="noopener">Open Discord</a>
+      </div>
+    </section>
+    <section id="page-redeem" class="page">
+      <div class="section">
+        <h2>Redeem Rewards</h2>
+        <div class="redeem-grid" id="redeemGrid"></div>
+        <h2 style="margin-top:20px">Your orders</h2>
+        <div class="list" id="ordersList"></div>
+      </div>
+    </section>
+    <section id="page-ranking" class="page">
+      <div class="section"><h2>Leaderboard</h2><div class="list" id="lbList"></div></div>
+    </section>
+    <section id="page-profile" class="page">
+      <div class="section">
+        <h2>Profile</h2>
+        <div class="row"><div class="grow"><strong id="profName">-</strong><div style="font-size:12px;color:var(--muted)" id="profId">-</div><div class="admin-tag hide" id="adminBadge">STAFF ADMIN</div></div></div>
+        <div style="height:12px"></div>
+        <button class="btn btn-ghost" style="width:100%" onclick="logout()">Logout</button>
+      </div>
+    </section>
+    <nav class="nav">
+      <a href="#" data-page="redeem" onclick="return nav(event,'redeem')"><span class="ic">🎁</span>Redeem</a>
+      <a href="#" data-page="offer" onclick="return nav(event,'offer')"><span class="ic">📨</span>Invite</a>
+      <a href="#" data-page="home" class="active" onclick="return nav(event,'home')"><span class="home-fab">🏠</span></a>
+      <a href="#" data-page="ranking" onclick="return nav(event,'ranking')"><span class="ic">🏆</span>Ranking</a>
+      <a href="#" data-page="profile" onclick="return nav(event,'profile')"><span class="ic">👤</span>Profile</a>
+    </nav>
+  </div>
+  <script src="/js/app.js"></script>
+</body>
+</html>
